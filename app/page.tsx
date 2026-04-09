@@ -1,5 +1,16 @@
 import { revalidatePath } from "next/cache";
 import { desc } from "drizzle-orm";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
 import { comments } from "@/src/schema";
 
 export const dynamic = "force-dynamic";
@@ -24,58 +35,66 @@ export default async function Page() {
   }
 
   return (
-    <div className="flex min-h-full flex-1 flex-col items-center justify-center bg-zinc-50 px-4 py-16 font-sans dark:bg-black">
-      <main className="w-full max-w-md rounded-2xl border border-zinc-200 bg-white p-8 shadow-sm dark:border-zinc-800 dark:bg-zinc-950">
-        <h1 className="mb-6 text-xl font-semibold text-zinc-900 dark:text-zinc-50">
-          Comments
-        </h1>
-        <form action={create} className="mb-8 flex flex-col gap-4">
-          <input
-            type="text"
-            name="comment"
-            placeholder="write a comment"
-            required
-            className="rounded-lg border border-zinc-300 bg-white px-3 py-2 text-zinc-900 placeholder:text-zinc-400 focus:border-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-500/20 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
-          />
-          <button
-            type="submit"
-            className="rounded-lg bg-zinc-900 px-4 py-2 font-medium text-white transition hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
-          >
-            Submit
-          </button>
-        </form>
+    <div className="flex min-h-full flex-1 flex-col items-center justify-center bg-muted/40 px-4 py-16">
+      <Card className="w-full max-w-md shadow-md">
+        <CardHeader>
+          <CardTitle>Comments</CardTitle>
+          <CardDescription>
+            コメントを入力して送信すると、一覧に反映されます。
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <form action={create} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="comment">コメント</Label>
+              <Input
+                id="comment"
+                name="comment"
+                type="text"
+                placeholder="write a comment"
+                required
+                autoComplete="off"
+              />
+            </div>
+            <Button type="submit" className="w-full">
+              Submit
+            </Button>
+          </form>
 
-        <section aria-labelledby="comments-heading">
-          <h2
-            id="comments-heading"
-            className="mb-3 text-sm font-medium text-zinc-500 dark:text-zinc-400"
-          >
-            登録済み（新しい順）
-          </h2>
-          {list.length === 0 ? (
-            <p className="text-sm text-zinc-500 dark:text-zinc-400">
-              まだコメントはありません。
-            </p>
-          ) : (
-            <ul className="flex flex-col gap-3">
-              {list.map((row) => (
-                <li
-                  key={row.id}
-                  className="rounded-lg border border-zinc-100 bg-zinc-50 px-3 py-2 dark:border-zinc-800 dark:bg-zinc-900/50"
-                >
-                  <p className="text-zinc-900 dark:text-zinc-50">{row.comment}</p>
-                  <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
-                    {row.createdAt.toLocaleString("ja-JP", {
-                      dateStyle: "short",
-                      timeStyle: "short",
-                    })}
-                  </p>
-                </li>
-              ))}
-            </ul>
-          )}
-        </section>
-      </main>
+          <Separator />
+
+          <section aria-labelledby="comments-heading">
+            <h2
+              id="comments-heading"
+              className="mb-3 text-sm font-medium text-muted-foreground"
+            >
+              登録済み（新しい順）
+            </h2>
+            {list.length === 0 ? (
+              <p className="text-sm text-muted-foreground">
+                まだコメントはありません。
+              </p>
+            ) : (
+              <ul className="flex flex-col gap-3">
+                {list.map((row) => (
+                  <li
+                    key={row.id}
+                    className="rounded-lg border border-border bg-muted/50 px-3 py-2.5"
+                  >
+                    <p className="text-sm text-foreground">{row.comment}</p>
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      {row.createdAt.toLocaleString("ja-JP", {
+                        dateStyle: "short",
+                        timeStyle: "short",
+                      })}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
+        </CardContent>
+      </Card>
     </div>
   );
 }
