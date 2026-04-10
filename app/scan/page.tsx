@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { Suspense, useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
@@ -39,7 +39,7 @@ function extractEquipmentId(text: string): number | null {
   }
 }
 
-export default function ScanPage() {
+function ScanContent() {
   const searchParams = useSearchParams();
   const [state, setState] = useState<PageState>("scan");
   const [equipment, setEquipment] = useState<Equipment | null>(null);
@@ -214,5 +214,13 @@ export default function ScanPage() {
         </Card>
       )}
     </div>
+  );
+}
+
+export default function ScanPage() {
+  return (
+    <Suspense fallback={<div className="text-center py-8 text-muted-foreground">読み込み中...</div>}>
+      <ScanContent />
+    </Suspense>
   );
 }
