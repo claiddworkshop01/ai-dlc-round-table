@@ -1,12 +1,13 @@
 import Link from "next/link";
 import { desc } from "drizzle-orm";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 import { equipments } from "@/src/schema";
 
 export const dynamic = "force-dynamic";
@@ -23,9 +24,9 @@ export default async function EquipmentsPage() {
     <div className="mx-auto max-w-4xl px-4 py-8">
       <div className="mb-6 flex items-center justify-between">
         <h1 className="text-2xl font-bold">備品一覧</h1>
-        <Button asChild>
-          <Link href="/equipments/new">+ 新規登録</Link>
-        </Button>
+        <Link href="/equipments/new" className={cn(buttonVariants())}>
+          + 新規登録
+        </Link>
       </div>
 
       {list.length === 0 ? (
@@ -43,12 +44,18 @@ export default async function EquipmentsPage() {
                 )}
                 <p className="text-sm">返却期限: {eq.defaultReturnDays}日</p>
                 <div className="flex gap-2 pt-2">
-                  <Button asChild variant="outline" size="sm">
-                    <Link href={`/equipments/${eq.id}/edit`}>編集</Link>
-                  </Button>
-                  <Button asChild variant="outline" size="sm">
-                    <Link href={`/equipments/${eq.id}/qr`}>QRコード</Link>
-                  </Button>
+                  <Link
+                    href={`/equipments/${eq.id}/edit`}
+                    className={cn(buttonVariants({ variant: "outline", size: "sm" }))}
+                  >
+                    編集
+                  </Link>
+                  <Link
+                    href={`/equipments/${eq.id}/qr`}
+                    className={cn(buttonVariants({ variant: "outline", size: "sm" }))}
+                  >
+                    QRコード
+                  </Link>
                 </div>
               </CardContent>
             </Card>

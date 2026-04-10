@@ -1,6 +1,7 @@
+import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { eq } from "drizzle-orm";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -9,6 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils";
 import { equipments } from "@/src/schema";
 
 export const dynamic = "force-dynamic";
@@ -94,9 +96,12 @@ export default async function EditEquipmentPage({
             </div>
             <div className="flex gap-2 pt-2">
               <Button type="submit" className="flex-1">保存する</Button>
-              <Button asChild variant="outline" className="flex-1">
-                <a href="/equipments">キャンセル</a>
-              </Button>
+              <Link
+                href="/equipments"
+                className={cn(buttonVariants({ variant: "outline" }), "flex-1 justify-center")}
+              >
+                キャンセル
+              </Link>
             </div>
           </form>
         </CardContent>
